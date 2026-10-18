@@ -26,4 +26,7 @@ rootProject.name = "e2echat"
 
 include(":app")
 include(":core:crypto")
+include(":core:protocol")
 include(":core:ui")
+
+include(":feature:x3dh")

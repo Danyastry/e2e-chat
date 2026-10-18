@@ -10,6 +10,7 @@ class AndroidFeatureConventionPlugin : Plugin<Project> {
 
         dependencies {
             add("implementation", project(":core:crypto"))
+            add("implementation", project(":core:protocol"))
             add("implementation", project(":core:ui"))
             add("implementation", libs.library("androidx-material3"))
             add("implementation", libs.library("androidx-lifecycle-viewmodel-compose"))
