@@ -1,0 +1,46 @@
+<resources>
+    <string name="x3dh_intro">X3DH lets User 1 start an encrypted chat with User 2 while User 2 is offline. User 2 leaves a bundle of public keys on the server, and both sides end up with the same secret without ever sending it.</string>
+    <string name="x3dh_step_publish">1. User 2 uploads keys to the server</string>
+    <string name="x3dh_publish">Upload keys</string>
+    <string name="x3dh_publish_again">Start over with new users</string>
+    <string name="x3dh_identity_key">Identity key: %1$s</string>
+    <string name="x3dh_signed_prekey">Signed prekey: %1$s</string>
+    <plurals name="x3dh_signature">
+        <item quantity="one">Signed by the identity key, %1$d byte Ed25519 signature</item>
+        <item quantity="other">Signed by the identity key, %1$d byte Ed25519 signature</item>
+    </plurals>
+    <plurals name="x3dh_one_time_uploaded">
+        <item quantity="one">%1$d one-time prekey</item>
+        <item quantity="other">%1$d one-time prekeys</item>
+    </plurals>
+    <string name="x3dh_step_fetch">2. User 1 fetches User 2\'s bundle</string>
+    <string name="x3dh_malicious">The server swaps the signed prekey</string>
+    <string name="x3dh_malicious_hint">A server that wants to read the chat could hand out a key of its own</string>
+    <string name="x3dh_fetch">Fetch bundle</string>
+    <string name="x3dh_bundle_one_time">One-time prekey #%1$d, now deleted on the server</string>
+    <string name="x3dh_bundle_no_one_time">No one-time prekey left, only three DH steps</string>
+    <plurals name="x3dh_server_left">
+        <item quantity="one">The server has %1$d one-time prekey left</item>
+        <item quantity="other">The server has %1$d one-time prekeys left</item>
+    </plurals>
+    <string name="x3dh_step_initiate">3. User 1 checks the signature and computes the secret</string>
+    <string name="x3dh_initiate">Check and compute</string>
+    <string name="x3dh_signature_invalid">The signature does not match. User 1 stops here and talks to nobody.</string>
+    <string name="x3dh_dh">DH%1$d: %2$s</string>
+    <string name="x3dh_dh_hint">DH1 identity × signed prekey, DH2 ephemeral × identity, DH3 ephemeral × signed prekey, DH4 ephemeral × one-time prekey</string>
+    <string name="x3dh_secret">Secret: %1$s</string>
+    <plurals name="x3dh_header">
+        <item quantity="one">Sends a %1$d byte header with the first message</item>
+        <item quantity="other">Sends a %1$d byte header with the first message</item>
+    </plurals>
+    <string name="x3dh_step_respond">4. User 2 comes online and computes the same secret</string>
+    <string name="x3dh_respond">Receive the first message</string>
+    <string name="x3dh_match">Same secret on both phones</string>
+    <string name="x3dh_mismatch">The secrets differ</string>
+    <plurals name="x3dh_user2_held">
+        <item quantity="one">User 2 deleted the used one-time prekey and holds %1$d more</item>
+        <item quantity="other">User 2 deleted the used one-time prekey and holds %1$d more</item>
+    </plurals>
+    <string name="x3dh_start_again">Another handshake</string>
+    <string name="x3dh_start_again_hint">Every new chat uses up a one-time prekey. When they run out, X3DH still works with three DH steps.</string>
+</resources>
