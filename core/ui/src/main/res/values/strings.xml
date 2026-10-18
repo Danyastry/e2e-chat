@@ -1,0 +1,12 @@
+<resources>
+    <string name="category_chat">Chat</string>
+    <string name="category_protocol">Protocol</string>
+    <string name="category_security">Security</string>
+    <string name="category_post_quantum">Post-quantum</string>
+    <string name="category_chat_description">Two phones, one server in the middle that sees only ciphertext</string>
+    <string name="category_protocol_description">How the keys are agreed and how they move with every message</string>
+    <string name="category_security_description">What happens when a key is stolen or messages arrive out of order</string>
+    <string name="category_post_quantum_description">The handshake Signal uses against future quantum computers</string>
+    <string name="requirement_android">Android %1$s+</string>
+    <string name="requirement_needs_android">Needs Android %1$s</string>
+</resources>
