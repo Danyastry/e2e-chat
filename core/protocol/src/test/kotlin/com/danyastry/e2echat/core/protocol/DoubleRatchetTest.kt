@@ -159,5 +159,17 @@ class DoubleRatchetTest {
         assertThat(one.previousChainLength).isEqualTo(2)
     }
 
+    @Test
+    fun `a copy works on its own without touching the original`() {
+        val first = user1.encrypt(text("one"))
+        val second = user1.encrypt(text("two"))
+        val copy = user2.copy()
+
+        assertThat(copy.decrypt(first).decodeToString()).isEqualTo("one")
+        assertThat(user2.snapshot().received).isEqualTo(0)
+        assertThat(user2.decrypt(second).decodeToString()).isEqualTo("two")
+        assertThat(copy.decrypt(second).decodeToString()).isEqualTo("two")
+    }
+
     private fun text(value: String) = value.encodeToByteArray()
 }
