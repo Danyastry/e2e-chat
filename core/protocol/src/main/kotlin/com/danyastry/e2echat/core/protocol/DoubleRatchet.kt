@@ -71,6 +71,8 @@ class DoubleRatchet private constructor(
         return plaintext
     }
 
+    fun copy(): DoubleRatchet = DoubleRatchet(state.copy(), associatedData, random)
+
     fun snapshot() = RatchetSnapshot(
         rootKey = state.rootKey,
         sendingChainKey = state.sendingChain,

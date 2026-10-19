@@ -29,6 +29,7 @@ dependencies {
     implementation(projects.feature.chat)
     implementation(projects.feature.x3dh)
     implementation(projects.feature.ratchet)
+    implementation(projects.feature.security)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

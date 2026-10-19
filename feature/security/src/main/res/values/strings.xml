@@ -1,0 +1,38 @@
+<resources>
+    <string name="security_tab_forward">Old messages</string>
+    <string name="security_tab_healing">Break-in</string>
+    <string name="security_tab_reorder">Order</string>
+    <string name="security_forward_title">Forward secrecy</string>
+    <string name="security_forward_intro">The server records the whole chat. Later a thief takes User 2\'s phone with everything in it. Can the thief read what was recorded?</string>
+    <string name="security_converse">Chat for three rounds</string>
+    <string name="security_conversed">Three rounds done, the server kept a copy of every message</string>
+    <string name="security_steal_and_attack">Steal the phone and decrypt the recording</string>
+    <string name="security_recorded">#%1$d %2$s</string>
+    <string name="security_locked">Not readable: its key was deleted right after use</string>
+    <string name="security_read">Read: %1$s</string>
+    <string name="security_forward_summary">Every message key is thrown away once used, and the chain only moves forward. The current state cannot go back to older keys.</string>
+    <string name="security_healing_title">Healing after a break-in</string>
+    <string name="security_healing_intro">The thief copies User 2\'s session and keeps listening to the server. New Diffie-Hellman keys in every reply push the thief out again.</string>
+    <string name="security_steal">Copy User 2\'s session</string>
+    <string name="security_stolen">The thief has a full copy of User 2\'s session</string>
+    <string name="security_user1_sends">User 1 sends</string>
+    <string name="security_user2_replies">User 2 replies</string>
+    <string name="security_view_not_stolen">Sent before the theft</string>
+    <string name="security_view_read">The thief read it</string>
+    <string name="security_view_locked">The thief is locked out</string>
+    <string name="security_view_not_targeted">A reply to User 1, the stolen copy cannot read it</string>
+    <string name="security_healing_hint">Try: copy the session, let User 1 send twice, let User 2 reply, then let User 1 send again</string>
+    <string name="security_reorder_title">Order, replay and forgery</string>
+    <string name="security_reorder_intro">Networks lose and reorder messages, and an attacker can resend or change them. The ratchet keeps keys for skipped messages and checks every message before trusting it.</string>
+    <string name="security_send_three">User 1 sends three messages</string>
+    <plurals name="security_held">
+        <item quantity="one">%1$d message is held by the server</item>
+        <item quantity="other">%1$d messages are held by the server</item>
+    </plurals>
+    <string name="security_deliver">Deliver them as 3, 1, 2</string>
+    <string name="security_replay">Deliver message 2 again</string>
+    <string name="security_tamper">Change one bit of a new message</string>
+    <string name="security_delivery_read">%1$s: read \"%2$s\"</string>
+    <string name="security_delivery_rejected">%1$s: rejected</string>
+    <string name="security_reset">Start over</string>
+</resources>
