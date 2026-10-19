@@ -27,6 +27,7 @@ dependencies {
     implementation(projects.core.ui)
 
     implementation(projects.feature.x3dh)
+    implementation(projects.feature.ratchet)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)

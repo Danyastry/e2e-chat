@@ -30,3 +30,4 @@ include(":core:protocol")
 include(":core:ui")
 
 include(":feature:x3dh")
+include(":feature:ratchet")

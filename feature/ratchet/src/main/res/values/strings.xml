@@ -1,0 +1,21 @@
+<resources>
+    <string name="ratchet_intro">After X3DH both users run the Double Ratchet. Every message moves a chain forward to a fresh key, and every reply mixes in a new Diffie-Hellman step. Old keys are deleted, so a stolen phone does not reveal earlier messages.</string>
+    <string name="ratchet_user_1">User 1</string>
+    <string name="ratchet_user_2">User 2</string>
+    <string name="ratchet_root">Root key: %1$s</string>
+    <string name="ratchet_ratchet_key">Ratchet key: %1$s</string>
+    <string name="ratchet_sending">Sending chain: %1$s · sent: %2$d</string>
+    <string name="ratchet_receiving">Receiving chain: %1$s · received: %2$d</string>
+    <string name="ratchet_no_chain">none yet</string>
+    <string name="ratchet_input_label">Message</string>
+    <string name="ratchet_send">Send</string>
+    <string name="ratchet_waiting">User 2 can reply after the first message</string>
+    <string name="ratchet_restart">Start a new session</string>
+    <string name="ratchet_log_title">Messages</string>
+    <string name="ratchet_log_empty">Send a few messages from one side, then reply from the other</string>
+    <string name="ratchet_log_from_user_1">User 1 → User 2: %1$s</string>
+    <string name="ratchet_log_from_user_2">User 2 → User 1: %1$s</string>
+    <string name="ratchet_log_header">Header: key %1$s, PN %2$d, N %3$d</string>
+    <string name="ratchet_log_dh_step">DH step: the receiver got a new ratchet key, so both root and chains changed</string>
+    <string name="ratchet_log_chain_step">Chain step: same ratchet key, the next message key in the chain</string>
+</resources>
