@@ -29,5 +29,6 @@ include(":core:crypto")
 include(":core:protocol")
 include(":core:ui")
 
+include(":feature:chat")
 include(":feature:x3dh")
 include(":feature:ratchet")
