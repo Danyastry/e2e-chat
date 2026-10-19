@@ -1,0 +1,22 @@
+<resources>
+    <string name="chat_intro">Two phones talk through a server. The first message runs X3DH, every message after that goes through the Double Ratchet. The server in the middle stores and forwards, but it only ever sees headers and ciphertext.</string>
+    <string name="chat_user_1">User 1</string>
+    <string name="chat_user_2">User 2</string>
+    <string name="chat_empty">No messages yet</string>
+    <string name="chat_input_label">Message</string>
+    <string name="chat_send">Send</string>
+    <string name="chat_online">Online</string>
+    <string name="chat_offline_hint">Offline: messages wait on the server until User 2 comes back</string>
+    <string name="chat_server_title">What the server sees</string>
+    <string name="chat_server_empty">Nothing has passed through yet</string>
+    <string name="chat_server_entry">#%1$d %2$s → %3$s · %4$s</string>
+    <string name="chat_kind_prekey">X3DH + message</string>
+    <string name="chat_kind_message">message</string>
+    <string name="chat_server_header">Ratchet key %1$s · PN %2$d · N %3$d · %4$d B</string>
+    <string name="chat_server_preview">Ciphertext: %1$s…</string>
+    <string name="chat_waiting">Waiting for User 2</string>
+    <plurals name="chat_waiting_count">
+        <item quantity="one">%1$d message is waiting on the server</item>
+        <item quantity="other">%1$d messages are waiting on the server</item>
+    </plurals>
+</resources>

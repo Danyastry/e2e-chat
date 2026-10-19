@@ -26,6 +26,7 @@ android {
 dependencies {
     implementation(projects.core.ui)
 
+    implementation(projects.feature.chat)
     implementation(projects.feature.x3dh)
     implementation(projects.feature.ratchet)
 
