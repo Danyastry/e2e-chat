@@ -1,0 +1,25 @@
+<resources>
+    <string name="pqxdh_intro">A recorder can keep today\'s encrypted traffic and wait. Once a large quantum computer exists, Shor\'s algorithm turns every recorded X25519 public key into its private key. PQXDH also runs ML-KEM-1024, which has no such known attack, and mixes its secret into the session key.</string>
+    <string name="pqxdh_harvest_title">Record now, decrypt later</string>
+    <string name="pqxdh_record">Record a chat over X3DH and one over PQXDH</string>
+    <string name="pqxdh_attack">Years later: break every X25519 key</string>
+    <string name="pqxdh_recording">%1$s · prekey bundle in bytes: %2$d · first message header in bytes: %3$d</string>
+    <string name="pqxdh_dh_broken">Diffie-Hellman outputs recomputed: %1$d of %1$d</string>
+    <string name="pqxdh_x3dh_broken">The session key is rebuilt from them alone</string>
+    <string name="pqxdh_pqxdh_safe">The ML-KEM secret is still missing, so the session key cannot be rebuilt</string>
+    <string name="pqxdh_read">Read: %1$s</string>
+    <string name="pqxdh_not_read">Not readable</string>
+    <string name="pqxdh_simulation">Simulation: no quantum computer is involved. The attacker is handed the Diffie-Hellman outputs, which is what breaking the recorded X25519 keys would give.</string>
+    <string name="pqxdh_prekeys_title">ML-KEM prekeys</string>
+    <string name="pqxdh_prekeys_intro">User 2 publishes signed one-time ML-KEM prekeys and one signed last-resort key. Each new chat uses up a one-time key. When they run out, the last-resort key is used and kept.</string>
+    <plurals name="pqxdh_prekeys_left">
+        <item quantity="one">%1$d one-time ML-KEM prekey left on the server</item>
+        <item quantity="other">%1$d one-time ML-KEM prekeys left on the server</item>
+    </plurals>
+    <string name="pqxdh_start_chat">Someone starts a chat with User 2</string>
+    <string name="pqxdh_chat_one_time">Chat %1$d: one-time ML-KEM prekey %2$d, deleted after use</string>
+    <string name="pqxdh_chat_last_resort">Chat %1$d: last-resort ML-KEM prekey, kept for the next chat</string>
+    <string name="pqxdh_agreed">Both sides agree on the session key</string>
+    <string name="pqxdh_not_agreed">The session keys do not match</string>
+    <string name="pqxdh_reset">Start over</string>
+</resources>

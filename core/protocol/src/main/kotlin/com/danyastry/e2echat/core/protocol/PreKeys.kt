@@ -23,7 +23,11 @@ class PreKeyBundle(
     val signedPreKeySignature: ByteArray,
     val oneTimePreKeyId: Int?,
     val oneTimePreKey: ByteArray?,
-)
+) {
+    val size: Int
+        get() = identityKey.size + signingKey.size + Int.SIZE_BYTES + signedPreKey.size + signedPreKeySignature.size +
+            (oneTimePreKey?.let { it.size + Int.SIZE_BYTES } ?: 0)
+}
 
 class PublishedKeys(
     val identityKey: ByteArray,
