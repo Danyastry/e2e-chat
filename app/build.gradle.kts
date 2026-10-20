@@ -30,6 +30,7 @@ dependencies {
     implementation(projects.feature.x3dh)
     implementation(projects.feature.ratchet)
     implementation(projects.feature.security)
+    implementation(projects.feature.pqxdh)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
