@@ -22,7 +22,7 @@ class SessionsTest {
 
         assertThat(accepted.decrypt(start.session.encrypt(text("Hello"))).decodeToString()).isEqualTo("Hello")
         assertThat(start.session.decrypt(accepted.encrypt(text("Hi back"))).decodeToString()).isEqualTo("Hi back")
-        assertThat(start.handshake.dhOutputs).hasSize(4)
+        assertThat(start.result.transcript.dhOutputs).hasSize(4)
     }
 
     @Test
@@ -45,8 +45,8 @@ class SessionsTest {
         val start = X3dhUser("User 1").startSession(server.fetchBundle("User 2"))
         val message = start.session.encrypt(text("Recorded"))
 
-        val withRealSecret = DoubleRatchet.responderFromRecoveredSecret(start.handshake.sharedSecret, user2.signedPreKey.keyPair, start.handshake.associatedData)
-        val withWrongSecret = DoubleRatchet.responderFromRecoveredSecret(ByteArray(32), user2.signedPreKey.keyPair, start.handshake.associatedData)
+        val withRealSecret = DoubleRatchet.responderFromRecoveredSecret(start.result.sharedSecret, user2.signedPreKey.keyPair, start.result.associatedData)
+        val withWrongSecret = DoubleRatchet.responderFromRecoveredSecret(ByteArray(32), user2.signedPreKey.keyPair, start.result.associatedData)
 
         assertThat(withRealSecret.decrypt(message).decodeToString()).isEqualTo("Recorded")
         assertThrows(AuthenticationException::class.java) { withWrongSecret.decrypt(message) }

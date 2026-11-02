@@ -6,7 +6,7 @@ import com.danyastry.e2echat.core.protocol.chat.ChatClient
 import com.danyastry.e2echat.core.protocol.chat.Envelope
 import com.danyastry.e2echat.core.protocol.chat.PreKeyEnvelope
 import com.danyastry.e2echat.core.protocol.chat.Relay
-import com.danyastry.e2echat.core.protocol.keys.KeyServer
+import com.danyastry.e2echat.core.protocol.x3dh.X3dhDirectory
 import com.danyastry.e2echat.feature.chat.model.EnvelopeKind
 import com.danyastry.e2echat.feature.chat.model.Person
 import com.danyastry.e2echat.feature.chat.state.Bubble
@@ -19,11 +19,11 @@ import kotlinx.coroutines.flow.update
 
 class ChatViewModel : ViewModel() {
 
-    private val keyServer = KeyServer()
+    private val directory = X3dhDirectory()
     private val relay = Relay()
     private val clients = mapOf(
-        Person.USER_1 to ChatClient(Person.USER_1.label, keyServer, relay),
-        Person.USER_2 to ChatClient(Person.USER_2.label, keyServer, relay),
+        Person.USER_1 to ChatClient(Person.USER_1.label, directory, relay),
+        Person.USER_2 to ChatClient(Person.USER_2.label, directory, relay),
     )
     private val delivered = mutableSetOf<Int>()
 

@@ -1,16 +1,18 @@
 package com.danyastry.e2echat.core.protocol.chat
 
-import com.danyastry.e2echat.core.protocol.keys.KeyServer
+import com.danyastry.e2echat.core.protocol.pqxdh.PqxdhDirectory
+import com.danyastry.e2echat.core.protocol.pqxdh.PqxdhHeader
+import com.danyastry.e2echat.core.protocol.x3dh.X3dhDirectory
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
 import org.junit.Test
 
 class ChatTest {
 
-    private val keyServer = KeyServer()
+    private val directory = X3dhDirectory()
     private val relay = Relay()
-    private val user1 = ChatClient("User 1", keyServer, relay)
-    private val user2 = ChatClient("User 2", keyServer, relay)
+    private val user1 = ChatClient("User 1", directory, relay)
+    private val user2 = ChatClient("User 2", directory, relay)
 
     @Test
     fun `the first message carries the x3dh header and opens a session`() {
@@ -99,5 +101,35 @@ class ChatTest {
     private fun deliver(to: String): List<String> {
         val client = if (to == "User 1") user1 else user2
         return relay.take(to).map(client::receive)
+    }
+
+    @Test
+    fun `the same chat runs on the post-quantum handshake`() {
+        val pqDirectory = PqxdhDirectory()
+        val pqRelay = Relay()
+        val pq1 = ChatClient("User 1", pqDirectory, pqRelay)
+        val pq2 = ChatClient("User 2", pqDirectory, pqRelay)
+
+        val first = pq1.send("User 2", "Hello after quantum")
+        val read = pqRelay.take("User 2").map(pq2::receive)
+        pq2.send("User 1", "Still private")
+        val reply = pqRelay.take("User 1").map(pq1::receive)
+
+        assertThat((first as PreKeyEnvelope).initial).isInstanceOf(PqxdhHeader::class.java)
+        assertThat(read).containsExactly("Hello after quantum")
+        assertThat(reply).containsExactly("Still private")
+    }
+
+    @Test
+    fun `a client refuses a handshake it does not speak`() {
+        val pqDirectory = PqxdhDirectory()
+        pqDirectory.register("User 2")
+        val pq1 = ChatClient("User 1", pqDirectory, relay)
+        val envelope = pq1.send("User 2", "Hello")
+
+        val error = runCatching { user2.receive(envelope) }.exceptionOrNull()
+
+        assertThat(error).isInstanceOf(IllegalArgumentException::class.java)
+        assertThat(error).hasMessageThat().contains("does not speak")
     }
 }

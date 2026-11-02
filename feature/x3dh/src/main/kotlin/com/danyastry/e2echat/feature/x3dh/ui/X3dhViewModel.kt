@@ -3,11 +3,12 @@ package com.danyastry.e2echat.feature.x3dh.ui
 import androidx.lifecycle.ViewModel
 import com.danyastry.e2echat.core.crypto.curve.X25519
 import com.danyastry.e2echat.core.crypto.fingerprint.Fingerprint
+import com.danyastry.e2echat.core.protocol.handshake.HandshakeResult
+import com.danyastry.e2echat.core.protocol.handshake.HandshakeStart
 import com.danyastry.e2echat.core.protocol.keys.KeyServer
 import com.danyastry.e2echat.core.protocol.keys.PreKeyBundle
-import com.danyastry.e2echat.core.protocol.x3dh.Initiation
+import com.danyastry.e2echat.core.protocol.x3dh.InitialHeader
 import com.danyastry.e2echat.core.protocol.x3dh.InvalidSignedPreKeyException
-import com.danyastry.e2echat.core.protocol.x3dh.X3dhResult
 import com.danyastry.e2echat.core.protocol.x3dh.X3dhUser
 import com.danyastry.e2echat.feature.x3dh.state.BundleInfo
 import com.danyastry.e2echat.feature.x3dh.state.PublishedInfo
@@ -27,7 +28,7 @@ class X3dhViewModel : ViewModel() {
     private var user1 = X3dhUser(USER_1)
     private var user2 = X3dhUser(USER_2)
     private var bundle: PreKeyBundle? = null
-    private var initiation: Initiation? = null
+    private var initiation: HandshakeStart<InitialHeader>? = null
 
     fun onPublish() {
         server = KeyServer()
@@ -88,7 +89,7 @@ class X3dhViewModel : ViewModel() {
         _state.update { it.copy(bundle = null, isSignatureValid = null, user1 = null, headerBytes = 0, user2 = null) }
     }
 
-    private fun X3dhResult.toInfo() = SecretInfo(dhOutputs.map(Fingerprint::of), Fingerprint.of(sharedSecret))
+    private fun HandshakeResult.toInfo() = SecretInfo(transcript.dhOutputs.map(Fingerprint::of), Fingerprint.of(sharedSecret))
 
     private fun PreKeyBundle.withSignedPreKey(key: ByteArray) =
         PreKeyBundle(identityKey, signingKey, signedPreKeyId, key, signedPreKeySignature, oneTimePreKeyId, oneTimePreKey)

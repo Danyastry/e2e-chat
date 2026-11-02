@@ -46,8 +46,8 @@ class HarvestDemo {
         return RecordedSession(
             recording = Recording(Handshake.X3DH, bundle.size, start.header.size, MESSAGES),
             ciphertexts = MESSAGES.map { start.session.encrypt(it.encodeToByteArray()) },
-            dhOutputs = start.handshake.dhOutputs,
-            associatedData = start.handshake.associatedData,
+            dhOutputs = start.result.transcript.dhOutputs,
+            associatedData = start.result.associatedData,
             responderRatchetKey = user2.signedPreKey.keyPair,
         )
     }
@@ -62,8 +62,8 @@ class HarvestDemo {
         return RecordedSession(
             recording = Recording(Handshake.PQXDH, bundle.size, start.header.size, MESSAGES),
             ciphertexts = MESSAGES.map { start.session.encrypt(it.encodeToByteArray()) },
-            dhOutputs = start.handshake.dhOutputs,
-            associatedData = start.handshake.associatedData,
+            dhOutputs = start.result.transcript.dhOutputs,
+            associatedData = start.result.associatedData,
             responderRatchetKey = user2.signedPreKey.keyPair,
         )
     }

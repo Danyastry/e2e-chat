@@ -1,7 +1,7 @@
 package com.danyastry.e2echat.core.protocol.chat
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.danyastry.e2echat.core.protocol.keys.KeyServer
+import com.danyastry.e2echat.core.protocol.x3dh.X3dhDirectory
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -11,10 +11,10 @@ class ChatOnDeviceTest {
 
     @Test
     fun twoClientsTalkThroughTheRelayOnTheDevice() {
-        val keyServer = KeyServer()
+        val directory = X3dhDirectory()
         val relay = Relay()
-        val user1 = ChatClient("User 1", keyServer, relay)
-        val user2 = ChatClient("User 2", keyServer, relay)
+        val user1 = ChatClient("User 1", directory, relay)
+        val user2 = ChatClient("User 2", directory, relay)
 
         user1.send("User 2", "Hello")
         val first = relay.take("User 2").map(user2::receive)

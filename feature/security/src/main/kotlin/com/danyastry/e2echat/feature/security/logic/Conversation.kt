@@ -3,15 +3,15 @@ package com.danyastry.e2echat.feature.security.logic
 import com.danyastry.e2echat.core.protocol.chat.ChatClient
 import com.danyastry.e2echat.core.protocol.chat.Envelope
 import com.danyastry.e2echat.core.protocol.chat.Relay
-import com.danyastry.e2echat.core.protocol.keys.KeyServer
 import com.danyastry.e2echat.core.protocol.ratchet.DoubleRatchet
+import com.danyastry.e2echat.core.protocol.x3dh.X3dhDirectory
 
 class Conversation {
 
-    private val keyServer = KeyServer()
+    private val directory = X3dhDirectory()
     private val relay = Relay()
-    private val user1 = ChatClient(USER_1, keyServer, relay)
-    private val user2 = ChatClient(USER_2, keyServer, relay)
+    private val user1 = ChatClient(USER_1, directory, relay)
+    private val user2 = ChatClient(USER_2, directory, relay)
 
     fun send(from: String, text: String): Envelope = client(from).send(other(from), text)
 
