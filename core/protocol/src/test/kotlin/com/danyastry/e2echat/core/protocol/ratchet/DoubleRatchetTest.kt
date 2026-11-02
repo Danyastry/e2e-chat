@@ -2,6 +2,8 @@ package com.danyastry.e2echat.core.protocol.ratchet
 
 import com.danyastry.e2echat.core.crypto.cipher.AuthenticationException
 import com.danyastry.e2echat.core.protocol.keys.KeyServer
+import com.danyastry.e2echat.core.protocol.session.acceptSession
+import com.danyastry.e2echat.core.protocol.session.startSession
 import com.danyastry.e2echat.core.protocol.x3dh.X3dhUser
 import com.google.common.truth.Truth.assertThat
 import org.junit.Assert.assertThrows
@@ -11,11 +13,10 @@ class DoubleRatchetTest {
 
     private val server = KeyServer()
     private val user2Keys = X3dhUser("User 2").also { server.publish("User 2", it.publishedKeys()) }
-    private val initiation = X3dhUser("User 1").initiate(server.fetchBundle("User 2"))
-    private val responder = user2Keys.respond(initiation.header)
+    private val start = X3dhUser("User 1").startSession(server.fetchBundle("User 2"))
 
-    private val user1 = DoubleRatchet.initiator(initiation.result.sharedSecret, user2Keys.signedPreKey.keyPair.publicKey, initiation.result.associatedData)
-    private val user2 = DoubleRatchet.responder(responder.sharedSecret, user2Keys.signedPreKey.keyPair, responder.associatedData)
+    private val user1 = start.session
+    private val user2 = user2Keys.acceptSession(start.header)
 
     @Test
     fun `user 2 reads the first message right after x3dh`() {
@@ -134,8 +135,8 @@ class DoubleRatchetTest {
 
     @Test
     fun `another session cannot read the messages`() {
-        val other = X3dhUser("User 3").initiate(server.fetchBundle("User 2"))
-        val stranger = DoubleRatchet.responder(other.result.sharedSecret, user2Keys.signedPreKey.keyPair, other.result.associatedData)
+        val other = X3dhUser("User 3").startSession(server.fetchBundle("User 2"))
+        val stranger = user2Keys.acceptSession(other.header)
 
         assertThrows(AuthenticationException::class.java) { stranger.decrypt(user1.encrypt(text("Hello"))) }
     }

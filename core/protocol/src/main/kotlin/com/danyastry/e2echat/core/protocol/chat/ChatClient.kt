@@ -2,6 +2,8 @@ package com.danyastry.e2echat.core.protocol.chat
 
 import com.danyastry.e2echat.core.protocol.keys.KeyServer
 import com.danyastry.e2echat.core.protocol.ratchet.DoubleRatchet
+import com.danyastry.e2echat.core.protocol.session.acceptSession
+import com.danyastry.e2echat.core.protocol.session.startSession
 import com.danyastry.e2echat.core.protocol.x3dh.InitialHeader
 import com.danyastry.e2echat.core.protocol.x3dh.X3dhUser
 import java.security.SecureRandom
@@ -10,7 +12,7 @@ class ChatClient(
     val name: String,
     private val keyServer: KeyServer,
     private val relay: Relay,
-    random: SecureRandom = SecureRandom(),
+    private val random: SecureRandom = SecureRandom(),
 ) {
     private val keys = X3dhUser(name, random = random)
     private val sessions = mutableMapOf<String, DoubleRatchet>()
@@ -37,8 +39,7 @@ class ChatClient(
     fun receive(envelope: Envelope): String {
         require(envelope.to == name) { "Envelope for ${envelope.to} delivered to $name" }
         if (envelope is PreKeyEnvelope && !acceptedHandshakes[envelope.from].contentEquals(envelope.initial.ephemeralKey)) {
-            val result = keys.respond(envelope.initial)
-            sessions[envelope.from] = DoubleRatchet.responder(result.sharedSecret, keys.signedPreKey.keyPair, result.associatedData)
+            sessions[envelope.from] = keys.acceptSession(envelope.initial, random)
             acceptedHandshakes[envelope.from] = envelope.initial.ephemeralKey
         }
         val session = checkNotNull(sessions[envelope.from]) { "No session with ${envelope.from}" }
@@ -48,10 +49,8 @@ class ChatClient(
     }
 
     private fun startSession(to: String): DoubleRatchet {
-        val bundle = keyServer.fetchBundle(to)
-        val initiation = keys.initiate(bundle)
-        pendingInitial[to] = initiation.header
-        return DoubleRatchet.initiator(initiation.result.sharedSecret, bundle.signedPreKey, initiation.result.associatedData)
-            .also { sessions[to] = it }
+        val start = keys.startSession(keyServer.fetchBundle(to), random)
+        pendingInitial[to] = start.header
+        return start.session.also { sessions[to] = it }
     }
 }

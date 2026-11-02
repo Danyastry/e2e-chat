@@ -2,7 +2,8 @@ package com.danyastry.e2echat.core.protocol.pqxdh
 
 import com.danyastry.e2echat.core.crypto.kem.MlKem
 import com.danyastry.e2echat.core.protocol.keys.PreKeyBundle
-import com.danyastry.e2echat.core.protocol.ratchet.DoubleRatchet
+import com.danyastry.e2echat.core.protocol.session.acceptSession
+import com.danyastry.e2echat.core.protocol.session.startSession
 import com.danyastry.e2echat.core.protocol.x3dh.InvalidSignedPreKeyException
 import com.danyastry.e2echat.core.protocol.x3dh.UnknownPreKeyException
 import com.danyastry.e2echat.core.protocol.x3dh.X3dh
@@ -119,11 +120,9 @@ class PqxdhTest {
 
     @Test
     fun `the double ratchet runs on top of the pqxdh secret`() {
-        val bundle = server.fetchBundle("User 2")
-        val initiation = user1.initiate(bundle)
-        val responder = user2.respond(initiation.header)
-        val sender = DoubleRatchet.initiator(initiation.result.sharedSecret, bundle.classical.signedPreKey, initiation.result.associatedData)
-        val receiver = DoubleRatchet.responder(responder.sharedSecret, user2.signedPreKey.keyPair, responder.associatedData)
+        val start = user1.startSession(server.fetchBundle("User 2"))
+        val sender = start.session
+        val receiver = user2.acceptSession(start.header)
 
         val message = sender.encrypt("Hello after quantum".encodeToByteArray())
 

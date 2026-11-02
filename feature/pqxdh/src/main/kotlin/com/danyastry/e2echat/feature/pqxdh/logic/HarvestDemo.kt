@@ -6,6 +6,8 @@ import com.danyastry.e2echat.core.protocol.pqxdh.Pqxdh
 import com.danyastry.e2echat.core.protocol.pqxdh.PqxdhKeyServer
 import com.danyastry.e2echat.core.protocol.pqxdh.PqxdhUser
 import com.danyastry.e2echat.core.protocol.ratchet.DoubleRatchet
+import com.danyastry.e2echat.core.protocol.session.acceptSession
+import com.danyastry.e2echat.core.protocol.session.startSession
 import com.danyastry.e2echat.core.protocol.x3dh.X3dh
 import com.danyastry.e2echat.core.protocol.x3dh.X3dhUser
 import com.danyastry.e2echat.feature.pqxdh.model.Handshake
@@ -29,7 +31,7 @@ class HarvestDemo {
             Handshake.X3DH -> X3dh.deriveSecret(session.dhOutputs)
             Handshake.PQXDH -> Pqxdh.deriveSecret(session.dhOutputs, ByteArray(MlKem.SHARED_SECRET_BYTES))
         }
-        val attacker = DoubleRatchet.responder(guessedSecret, session.responderRatchetKey, session.associatedData)
+        val attacker = DoubleRatchet.responderFromRecoveredSecret(guessedSecret, session.responderRatchetKey, session.associatedData)
         val read = session.ciphertexts.map { message -> runCatching { attacker.decrypt(message).decodeToString() }.getOrNull() }
         QuantumAttack(session.recording.handshake, session.dhOutputs.size, read)
     }
@@ -39,14 +41,13 @@ class HarvestDemo {
         val user1 = X3dhUser(USER_1)
         val user2 = X3dhUser(USER_2).also { server.publish(USER_2, it.publishedKeys()) }
         val bundle = server.fetchBundle(USER_2)
-        val initiation = user1.initiate(bundle)
-        user2.respond(initiation.header)
-        val sender = DoubleRatchet.initiator(initiation.result.sharedSecret, bundle.signedPreKey, initiation.result.associatedData)
+        val start = user1.startSession(bundle)
+        user2.acceptSession(start.header)
         return RecordedSession(
-            recording = Recording(Handshake.X3DH, bundle.size, initiation.header.size, MESSAGES),
-            ciphertexts = MESSAGES.map { sender.encrypt(it.encodeToByteArray()) },
-            dhOutputs = initiation.result.dhOutputs,
-            associatedData = initiation.result.associatedData,
+            recording = Recording(Handshake.X3DH, bundle.size, start.header.size, MESSAGES),
+            ciphertexts = MESSAGES.map { start.session.encrypt(it.encodeToByteArray()) },
+            dhOutputs = start.handshake.dhOutputs,
+            associatedData = start.handshake.associatedData,
             responderRatchetKey = user2.signedPreKey.keyPair,
         )
     }
@@ -56,14 +57,13 @@ class HarvestDemo {
         val user1 = PqxdhUser(USER_1)
         val user2 = PqxdhUser(USER_2).also { server.publish(USER_2, it.publishedKeys()) }
         val bundle = server.fetchBundle(USER_2)
-        val initiation = user1.initiate(bundle)
-        user2.respond(initiation.header)
-        val sender = DoubleRatchet.initiator(initiation.result.sharedSecret, bundle.classical.signedPreKey, initiation.result.associatedData)
+        val start = user1.startSession(bundle)
+        user2.acceptSession(start.header)
         return RecordedSession(
-            recording = Recording(Handshake.PQXDH, bundle.size, initiation.header.size, MESSAGES),
-            ciphertexts = MESSAGES.map { sender.encrypt(it.encodeToByteArray()) },
-            dhOutputs = initiation.result.dhOutputs,
-            associatedData = initiation.result.associatedData,
+            recording = Recording(Handshake.PQXDH, bundle.size, start.header.size, MESSAGES),
+            ciphertexts = MESSAGES.map { start.session.encrypt(it.encodeToByteArray()) },
+            dhOutputs = start.handshake.dhOutputs,
+            associatedData = start.handshake.associatedData,
             responderRatchetKey = user2.signedPreKey.keyPair,
         )
     }

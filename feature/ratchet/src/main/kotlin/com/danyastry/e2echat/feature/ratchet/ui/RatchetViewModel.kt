@@ -5,6 +5,8 @@ import com.danyastry.e2echat.core.crypto.fingerprint.Fingerprint
 import com.danyastry.e2echat.core.protocol.keys.KeyServer
 import com.danyastry.e2echat.core.protocol.ratchet.DoubleRatchet
 import com.danyastry.e2echat.core.protocol.ratchet.RatchetSnapshot
+import com.danyastry.e2echat.core.protocol.session.acceptSession
+import com.danyastry.e2echat.core.protocol.session.startSession
 import com.danyastry.e2echat.core.protocol.x3dh.X3dhUser
 import com.danyastry.e2echat.feature.ratchet.model.Participant
 import com.danyastry.e2echat.feature.ratchet.state.LogEntry
@@ -28,12 +30,11 @@ class RatchetViewModel : ViewModel() {
 
     fun onRestart() {
         val server = KeyServer()
-        val user2Keys = X3dhUser("User 2").also { server.publish("User 2", it.publishedKeys()) }
-        val initiation = X3dhUser("User 1").initiate(server.fetchBundle("User 2"))
-        val responder = user2Keys.respond(initiation.header)
+        val user2 = X3dhUser("User 2").also { server.publish("User 2", it.publishedKeys()) }
+        val start = X3dhUser("User 1").startSession(server.fetchBundle("User 2"))
         sessions = mapOf(
-            Participant.USER_1 to DoubleRatchet.initiator(initiation.result.sharedSecret, user2Keys.signedPreKey.keyPair.publicKey, initiation.result.associatedData),
-            Participant.USER_2 to DoubleRatchet.responder(responder.sharedSecret, user2Keys.signedPreKey.keyPair, responder.associatedData),
+            Participant.USER_1 to start.session,
+            Participant.USER_2 to user2.acceptSession(start.header),
         )
         _state.update { RatchetUiState(input = it.input).withSnapshots() }
     }
