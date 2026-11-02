@@ -93,14 +93,17 @@ class DoubleRatchet private constructor(
         private val MESSAGE_KEY_INPUT = byteArrayOf(0x01)
         private val CHAIN_KEY_INPUT = byteArrayOf(0x02)
 
-        fun initiator(sharedSecret: ByteArray, remoteRatchetKey: ByteArray, associatedData: ByteArray, random: SecureRandom = SecureRandom()): DoubleRatchet {
+        internal fun initiator(sharedSecret: ByteArray, remoteRatchetKey: ByteArray, associatedData: ByteArray, random: SecureRandom = SecureRandom()): DoubleRatchet {
             val own = X25519.generate(random)
             val (rootKey, sendingChain) = rootStep(sharedSecret, X25519.agree(own.privateKey, remoteRatchetKey))
             return DoubleRatchet(RatchetState(own, remoteRatchetKey, rootKey, sendingChain, null, 0, 0, 0, LinkedHashMap()), associatedData, random)
         }
 
-        fun responder(sharedSecret: ByteArray, ownRatchetKey: KeyPair, associatedData: ByteArray, random: SecureRandom = SecureRandom()): DoubleRatchet =
+        internal fun responder(sharedSecret: ByteArray, ownRatchetKey: KeyPair, associatedData: ByteArray, random: SecureRandom = SecureRandom()): DoubleRatchet =
             DoubleRatchet(RatchetState(ownRatchetKey, null, sharedSecret, null, null, 0, 0, 0, LinkedHashMap()), associatedData, random)
+
+        fun responderFromRecoveredSecret(recoveredSecret: ByteArray, responderRatchetKey: KeyPair, associatedData: ByteArray): DoubleRatchet =
+            responder(recoveredSecret, responderRatchetKey, associatedData)
 
         internal fun rootStep(rootKey: ByteArray, dhOutput: ByteArray): Pair<ByteArray, ByteArray> {
             val derived = Hkdf.sha256(dhOutput, rootKey, ROOT_INFO, KEY_BYTES * 2)
