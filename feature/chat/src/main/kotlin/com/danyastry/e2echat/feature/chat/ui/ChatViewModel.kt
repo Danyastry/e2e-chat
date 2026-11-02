@@ -1,12 +1,17 @@
 package com.danyastry.e2echat.feature.chat.ui
 
 import androidx.lifecycle.ViewModel
-import com.danyastry.e2echat.core.crypto.Fingerprint
-import com.danyastry.e2echat.core.protocol.ChatClient
-import com.danyastry.e2echat.core.protocol.Envelope
-import com.danyastry.e2echat.core.protocol.KeyServer
-import com.danyastry.e2echat.core.protocol.PreKeyEnvelope
-import com.danyastry.e2echat.core.protocol.Relay
+import com.danyastry.e2echat.core.crypto.fingerprint.Fingerprint
+import com.danyastry.e2echat.core.protocol.chat.ChatClient
+import com.danyastry.e2echat.core.protocol.chat.Envelope
+import com.danyastry.e2echat.core.protocol.chat.PreKeyEnvelope
+import com.danyastry.e2echat.core.protocol.chat.Relay
+import com.danyastry.e2echat.core.protocol.keys.KeyServer
+import com.danyastry.e2echat.feature.chat.model.EnvelopeKind
+import com.danyastry.e2echat.feature.chat.model.Person
+import com.danyastry.e2echat.feature.chat.state.Bubble
+import com.danyastry.e2echat.feature.chat.state.ChatUiState
+import com.danyastry.e2echat.feature.chat.state.ServerEntry
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

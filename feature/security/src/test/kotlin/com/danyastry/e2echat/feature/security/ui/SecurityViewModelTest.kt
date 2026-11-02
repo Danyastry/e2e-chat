@@ -1,7 +1,9 @@
 package com.danyastry.e2echat.feature.security.ui
 
-import com.danyastry.e2echat.feature.security.AttackerView
-import com.danyastry.e2echat.feature.security.Delivery
+import com.danyastry.e2echat.feature.security.model.AttackerView
+import com.danyastry.e2echat.feature.security.model.Delivery
+import com.danyastry.e2echat.feature.security.model.Demo
+import com.danyastry.e2echat.feature.security.state.SecurityUiState
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

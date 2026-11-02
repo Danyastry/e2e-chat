@@ -1,9 +1,11 @@
 package com.danyastry.e2echat.feature.security.ui
 
 import androidx.lifecycle.ViewModel
-import com.danyastry.e2echat.feature.security.ForwardSecrecyDemo
-import com.danyastry.e2echat.feature.security.HealingDemo
-import com.danyastry.e2echat.feature.security.ReorderDemo
+import com.danyastry.e2echat.feature.security.logic.ForwardSecrecyDemo
+import com.danyastry.e2echat.feature.security.logic.HealingDemo
+import com.danyastry.e2echat.feature.security.logic.ReorderDemo
+import com.danyastry.e2echat.feature.security.model.Demo
+import com.danyastry.e2echat.feature.security.state.SecurityUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

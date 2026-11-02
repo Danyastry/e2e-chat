@@ -27,6 +27,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.danyastry.e2echat.core.ui.theme.ChatTheme
 import com.danyastry.e2echat.feature.x3dh.R
+import com.danyastry.e2echat.feature.x3dh.state.BundleInfo
+import com.danyastry.e2echat.feature.x3dh.state.PublishedInfo
+import com.danyastry.e2echat.feature.x3dh.state.SecretInfo
+import com.danyastry.e2echat.feature.x3dh.state.X3dhUiState
 
 @Composable
 fun X3dhRoute(

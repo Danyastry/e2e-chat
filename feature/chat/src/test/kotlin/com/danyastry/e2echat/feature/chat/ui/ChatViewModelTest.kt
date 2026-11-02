@@ -1,5 +1,8 @@
 package com.danyastry.e2echat.feature.chat.ui
 
+import com.danyastry.e2echat.feature.chat.model.EnvelopeKind
+import com.danyastry.e2echat.feature.chat.model.Person
+import com.danyastry.e2echat.feature.chat.state.Bubble
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 
