@@ -132,4 +132,13 @@ class ChatTest {
         assertThat(error).isInstanceOf(IllegalArgumentException::class.java)
         assertThat(error).hasMessageThat().contains("does not speak")
     }
+
+    @Test
+    fun `the relay knows which envelopes are still waiting`() {
+        val envelope = user1.send("User 2", "Hello")
+
+        assertThat(relay.isWaiting(envelope)).isTrue()
+        deliver("User 2")
+        assertThat(relay.isWaiting(envelope)).isFalse()
+    }
 }

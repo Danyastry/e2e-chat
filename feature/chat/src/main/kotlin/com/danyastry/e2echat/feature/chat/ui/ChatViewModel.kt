@@ -2,11 +2,10 @@ package com.danyastry.e2echat.feature.chat.ui
 
 import androidx.lifecycle.ViewModel
 import com.danyastry.e2echat.core.crypto.fingerprint.Fingerprint
-import com.danyastry.e2echat.core.protocol.chat.ChatClient
 import com.danyastry.e2echat.core.protocol.chat.Envelope
 import com.danyastry.e2echat.core.protocol.chat.PreKeyEnvelope
-import com.danyastry.e2echat.core.protocol.chat.Relay
-import com.danyastry.e2echat.core.protocol.x3dh.X3dhDirectory
+import com.danyastry.e2echat.core.protocol.conversation.Conversation
+import com.danyastry.e2echat.core.protocol.conversation.Participants
 import com.danyastry.e2echat.feature.chat.model.EnvelopeKind
 import com.danyastry.e2echat.feature.chat.model.Person
 import com.danyastry.e2echat.feature.chat.state.Bubble
@@ -19,13 +18,7 @@ import kotlinx.coroutines.flow.update
 
 class ChatViewModel : ViewModel() {
 
-    private val directory = X3dhDirectory()
-    private val relay = Relay()
-    private val clients = mapOf(
-        Person.USER_1 to ChatClient(Person.USER_1.label, directory, relay),
-        Person.USER_2 to ChatClient(Person.USER_2.label, directory, relay),
-    )
-    private val delivered = mutableSetOf<Int>()
+    private val conversation = Conversation.x3dh()
 
     private val _state = MutableStateFlow(ChatUiState())
     val state: StateFlow<ChatUiState> = _state.asStateFlow()
@@ -38,7 +31,7 @@ class ChatViewModel : ViewModel() {
         val snapshot = _state.value
         val text = if (person == Person.USER_1) snapshot.user1Input else snapshot.user2Input
         if (text.isBlank() || (person == Person.USER_2 && !snapshot.isUser2Online)) return
-        clients.getValue(person).send(person.other.label, text)
+        conversation.send(person.label, text)
         _state.update { state ->
             val bubble = Bubble(text, isMine = true)
             if (person == Person.USER_1) state.copy(user1 = state.user1 + bubble, user1Input = "") else state.copy(user2 = state.user2 + bubble, user2Input = "")
@@ -56,10 +49,7 @@ class ChatViewModel : ViewModel() {
             refreshServer()
             return
         }
-        val received = relay.take(person.label).map { envelope ->
-            delivered += envelope.id
-            Bubble(clients.getValue(person).receive(envelope), isMine = false)
-        }
+        val received = conversation.deliverAll(person.label).map { Bubble(it, isMine = false) }
         _state.update { state ->
             if (person == Person.USER_1) state.copy(user1 = state.user1 + received) else state.copy(user2 = state.user2 + received)
         }
@@ -67,23 +57,23 @@ class ChatViewModel : ViewModel() {
     }
 
     private fun refreshServer() {
-        _state.update { it.copy(server = relay.log.reversed().map(::toEntry)) }
+        _state.update { it.copy(server = conversation.log.reversed().map(::toEntry)) }
     }
 
     private fun toEntry(envelope: Envelope) = ServerEntry(
         id = envelope.id,
-        from = if (envelope.from == Person.USER_1.label) Person.USER_1 else Person.USER_2,
+        from = if (envelope.from == Participants.USER_1) Person.USER_1 else Person.USER_2,
         kind = if (envelope is PreKeyEnvelope) EnvelopeKind.PRE_KEY else EnvelopeKind.MESSAGE,
         ratchetKey = Fingerprint.of(envelope.message.header.ratchetKey),
         previousChainLength = envelope.message.header.previousChainLength,
         messageNumber = envelope.message.header.messageNumber,
         bytes = envelope.size,
         preview = envelope.message.ciphertext.take(PREVIEW_BYTES).joinToString("") { (it.toInt() and 0xff).toString(16).padStart(2, '0') },
-        isWaiting = envelope.id !in delivered,
+        isWaiting = conversation.isWaiting(envelope),
     )
 
     private val Person.label: String
-        get() = if (this == Person.USER_1) "User 1" else "User 2"
+        get() = if (this == Person.USER_1) Participants.USER_1 else Participants.USER_2
 
     private val Person.other: Person
         get() = if (this == Person.USER_1) Person.USER_2 else Person.USER_1
