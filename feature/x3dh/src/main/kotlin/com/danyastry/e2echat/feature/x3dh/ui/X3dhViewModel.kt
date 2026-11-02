@@ -3,6 +3,8 @@ package com.danyastry.e2echat.feature.x3dh.ui
 import androidx.lifecycle.ViewModel
 import com.danyastry.e2echat.core.crypto.curve.X25519
 import com.danyastry.e2echat.core.crypto.fingerprint.Fingerprint
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_1
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_2
 import com.danyastry.e2echat.core.protocol.handshake.HandshakeResult
 import com.danyastry.e2echat.core.protocol.handshake.HandshakeStart
 import com.danyastry.e2echat.core.protocol.keys.KeyServer
@@ -93,9 +95,4 @@ class X3dhViewModel : ViewModel() {
 
     private fun PreKeyBundle.withSignedPreKey(key: ByteArray) =
         PreKeyBundle(identityKey, signingKey, signedPreKeyId, key, signedPreKeySignature, oneTimePreKeyId, oneTimePreKey)
-
-    companion object {
-        const val USER_1 = "User 1"
-        const val USER_2 = "User 2"
-    }
 }

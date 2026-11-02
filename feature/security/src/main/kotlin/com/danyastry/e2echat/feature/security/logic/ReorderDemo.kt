@@ -3,15 +3,16 @@ package com.danyastry.e2echat.feature.security.logic
 import com.danyastry.e2echat.core.protocol.chat.Envelope
 import com.danyastry.e2echat.core.protocol.chat.MessageEnvelope
 import com.danyastry.e2echat.core.protocol.chat.PreKeyEnvelope
+import com.danyastry.e2echat.core.protocol.conversation.Conversation
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_1
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_2
 import com.danyastry.e2echat.core.protocol.ratchet.RatchetMessage
-import com.danyastry.e2echat.feature.security.logic.Conversation.Companion.USER_1
-import com.danyastry.e2echat.feature.security.logic.Conversation.Companion.USER_2
 import com.danyastry.e2echat.feature.security.model.Delivery
 import com.danyastry.e2echat.feature.security.model.DeliveryResult
 
 class ReorderDemo {
 
-    private val conversation = Conversation().apply { sendAndDeliver(USER_1, "Hello") }
+    private val conversation = Conversation.x3dh().apply { sendAndDeliver(USER_1, "Hello") }
     private val held = mutableListOf<Envelope>()
 
     val heldCount: Int

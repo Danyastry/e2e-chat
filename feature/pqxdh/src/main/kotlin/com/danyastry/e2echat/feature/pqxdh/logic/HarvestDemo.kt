@@ -1,6 +1,8 @@
 package com.danyastry.e2echat.feature.pqxdh.logic
 
 import com.danyastry.e2echat.core.crypto.kem.MlKem
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_1
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_2
 import com.danyastry.e2echat.core.protocol.keys.KeyServer
 import com.danyastry.e2echat.core.protocol.pqxdh.Pqxdh
 import com.danyastry.e2echat.core.protocol.pqxdh.PqxdhKeyServer
@@ -69,8 +71,6 @@ class HarvestDemo {
     }
 
     companion object {
-        const val USER_1 = "User 1"
-        const val USER_2 = "User 2"
         val MESSAGES = listOf("The launch is on Friday", "Keep it quiet until then")
     }
 }

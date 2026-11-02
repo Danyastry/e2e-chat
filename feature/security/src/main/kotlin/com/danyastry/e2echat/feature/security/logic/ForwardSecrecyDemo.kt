@@ -1,13 +1,14 @@
 package com.danyastry.e2echat.feature.security.logic
 
 import com.danyastry.e2echat.core.protocol.chat.Envelope
-import com.danyastry.e2echat.feature.security.logic.Conversation.Companion.USER_1
-import com.danyastry.e2echat.feature.security.logic.Conversation.Companion.USER_2
+import com.danyastry.e2echat.core.protocol.conversation.Conversation
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_1
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_2
 import com.danyastry.e2echat.feature.security.model.RecordedMessage
 
 class ForwardSecrecyDemo {
 
-    private val conversation = Conversation()
+    private val conversation = Conversation.x3dh()
     private val recorded = mutableListOf<Pair<Envelope, String>>()
 
     var hasConversation = false

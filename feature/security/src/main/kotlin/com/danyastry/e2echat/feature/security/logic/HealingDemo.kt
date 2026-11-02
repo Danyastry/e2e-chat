@@ -1,14 +1,15 @@
 package com.danyastry.e2echat.feature.security.logic
 
+import com.danyastry.e2echat.core.protocol.conversation.Conversation
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_1
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_2
 import com.danyastry.e2echat.core.protocol.ratchet.DoubleRatchet
-import com.danyastry.e2echat.feature.security.logic.Conversation.Companion.USER_1
-import com.danyastry.e2echat.feature.security.logic.Conversation.Companion.USER_2
 import com.danyastry.e2echat.feature.security.model.AttackerView
 import com.danyastry.e2echat.feature.security.model.TimelineEntry
 
 class HealingDemo {
 
-    private val conversation = Conversation().apply {
+    private val conversation = Conversation.x3dh().apply {
         sendAndDeliver(USER_1, "Hello")
         sendAndDeliver(USER_2, "Hi")
     }

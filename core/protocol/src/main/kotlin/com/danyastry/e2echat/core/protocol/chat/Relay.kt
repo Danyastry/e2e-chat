@@ -1,5 +1,6 @@
 package com.danyastry.e2echat.core.protocol.chat
 
+
 class Relay {
 
     private val queues = mutableMapOf<String, ArrayDeque<Envelope>>()
@@ -22,4 +23,6 @@ class Relay {
     }
 
     fun waiting(user: String): Int = queues[user]?.size ?: 0
+
+    fun isWaiting(envelope: Envelope): Boolean = queues[envelope.to]?.contains(envelope) == true
 }

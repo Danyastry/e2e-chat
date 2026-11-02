@@ -2,6 +2,8 @@ package com.danyastry.e2echat.feature.ratchet.ui
 
 import androidx.lifecycle.ViewModel
 import com.danyastry.e2echat.core.crypto.fingerprint.Fingerprint
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_1
+import com.danyastry.e2echat.core.protocol.conversation.Participants.USER_2
 import com.danyastry.e2echat.core.protocol.keys.KeyServer
 import com.danyastry.e2echat.core.protocol.ratchet.DoubleRatchet
 import com.danyastry.e2echat.core.protocol.ratchet.RatchetSnapshot
@@ -30,8 +32,8 @@ class RatchetViewModel : ViewModel() {
 
     fun onRestart() {
         val server = KeyServer()
-        val user2 = X3dhUser("User 2").also { server.publish("User 2", it.publishedKeys()) }
-        val start = X3dhUser("User 1").startSession(server.fetchBundle("User 2"))
+        val user2 = X3dhUser(USER_2).also { server.publish(USER_2, it.publishedKeys()) }
+        val start = X3dhUser(USER_1).startSession(server.fetchBundle(USER_2))
         sessions = mapOf(
             Participant.USER_1 to start.session,
             Participant.USER_2 to user2.acceptSession(start.header),
