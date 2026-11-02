@@ -2,6 +2,11 @@ package com.danyastry.e2echat.core.protocol.x3dh
 
 import com.danyastry.e2echat.core.crypto.curve.Ed25519
 import com.danyastry.e2echat.core.crypto.curve.X25519
+import com.danyastry.e2echat.core.protocol.handshake.Handshake
+import com.danyastry.e2echat.core.protocol.handshake.HandshakeHeader
+import com.danyastry.e2echat.core.protocol.handshake.HandshakeResult
+import com.danyastry.e2echat.core.protocol.handshake.HandshakeStart
+import com.danyastry.e2echat.core.protocol.handshake.HandshakeTranscript
 import com.danyastry.e2echat.core.protocol.keys.IdentityKeys
 import com.danyastry.e2echat.core.protocol.keys.OneTimePreKey
 import com.danyastry.e2echat.core.protocol.keys.PreKeyBundle
@@ -10,13 +15,13 @@ import com.danyastry.e2echat.core.protocol.keys.SignedPreKey
 import java.security.SecureRandom
 
 class X3dhUser(
-    val name: String,
+    override val name: String,
     oneTimePreKeyCount: Int = DEFAULT_ONE_TIME_PREKEYS,
     private val random: SecureRandom = SecureRandom(),
-) {
+) : Handshake<PreKeyBundle, InitialHeader> {
     val identity = IdentityKeys.generate(random)
 
-    val signedPreKey: SignedPreKey = X25519.generate(random).let { pair ->
+    override val signedPreKey: SignedPreKey = X25519.generate(random).let { pair ->
         SignedPreKey(id = 1, keyPair = pair, signature = Ed25519.sign(identity.signing.privateKey, pair.publicKey))
     }
 
@@ -34,7 +39,20 @@ class X3dhUser(
         oneTimePreKeys = oneTimePreKeys.mapValues { it.value.keyPair.publicKey },
     )
 
-    fun initiate(bundle: PreKeyBundle): Initiation {
+    override fun initiate(bundle: PreKeyBundle): HandshakeStart<InitialHeader> {
+        val agreement = agreeAsInitiator(bundle)
+        val result = HandshakeResult(X3dh.deriveSecret(agreement.dhOutputs), agreement.associatedData, HandshakeTranscript(agreement.dhOutputs, null))
+        return HandshakeStart(agreement.header, result)
+    }
+
+    override fun respond(header: InitialHeader): HandshakeResult {
+        val agreement = agreeAsResponder(header)
+        return HandshakeResult(X3dh.deriveSecret(agreement.dhOutputs), agreement.associatedData, HandshakeTranscript(agreement.dhOutputs, null))
+    }
+
+    override fun headerOf(header: HandshakeHeader): InitialHeader? = header as? InitialHeader
+
+    internal fun agreeAsInitiator(bundle: PreKeyBundle): X3dhAgreement {
         if (!Ed25519.verify(bundle.signingKey, bundle.signedPreKey, bundle.signedPreKeySignature)) throw InvalidSignedPreKeyException()
         val ephemeral = X25519.generate(random)
         val dhOutputs = listOfNotNull(
@@ -44,10 +62,10 @@ class X3dhUser(
             bundle.oneTimePreKey?.let { X25519.agree(ephemeral.privateKey, it) },
         )
         val header = InitialHeader(identity.dh.publicKey, ephemeral.publicKey, bundle.signedPreKeyId, bundle.oneTimePreKeyId)
-        return Initiation(header, X3dhResult(X3dh.deriveSecret(dhOutputs), identity.dh.publicKey + bundle.identityKey, dhOutputs))
+        return X3dhAgreement(header, identity.dh.publicKey + bundle.identityKey, dhOutputs)
     }
 
-    fun respond(header: InitialHeader): X3dhResult {
+    internal fun agreeAsResponder(header: InitialHeader): X3dhAgreement {
         if (header.signedPreKeyId != signedPreKey.id) throw UnknownPreKeyException("Unknown signed prekey ${header.signedPreKeyId}")
         val oneTime = header.oneTimePreKeyId?.let { id ->
             oneTimePreKeys.remove(id) ?: throw UnknownPreKeyException("One-time prekey $id is unknown or already used")
@@ -58,7 +76,7 @@ class X3dhUser(
             X25519.agree(signedPreKey.keyPair.privateKey, header.ephemeralKey),
             oneTime?.let { X25519.agree(it.keyPair.privateKey, header.ephemeralKey) },
         )
-        return X3dhResult(X3dh.deriveSecret(dhOutputs), header.identityKey + identity.dh.publicKey, dhOutputs)
+        return X3dhAgreement(header, header.identityKey + identity.dh.publicKey, dhOutputs)
     }
 
     companion object {

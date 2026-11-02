@@ -1,11 +1,13 @@
 package com.danyastry.e2echat.core.protocol.x3dh
 
+import com.danyastry.e2echat.core.protocol.handshake.HandshakeHeader
+
 class InitialHeader(
-    val identityKey: ByteArray,
-    val ephemeralKey: ByteArray,
+    override val identityKey: ByteArray,
+    override val ephemeralKey: ByteArray,
     val signedPreKeyId: Int,
     val oneTimePreKeyId: Int?,
-) {
-    val size: Int
+) : HandshakeHeader {
+    override val size: Int
         get() = identityKey.size + ephemeralKey.size + Int.SIZE_BYTES + if (oneTimePreKeyId != null) Int.SIZE_BYTES else 0
 }

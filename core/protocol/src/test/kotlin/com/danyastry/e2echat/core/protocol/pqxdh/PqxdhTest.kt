@@ -32,16 +32,16 @@ class PqxdhTest {
     fun `the ml-kem secret is mixed in, so the result differs from plain x3dh`() {
         val result = user1.initiate(server.fetchBundle("User 2")).result
 
-        assertThat(result.dhOutputs).hasSize(4)
-        assertThat(result.sharedSecret).isEqualTo(Pqxdh.deriveSecret(result.dhOutputs, result.kemSecret))
-        assertThat(result.sharedSecret).isNotEqualTo(X3dh.deriveSecret(result.dhOutputs))
+        assertThat(result.transcript.dhOutputs).hasSize(4)
+        assertThat(result.sharedSecret).isEqualTo(Pqxdh.deriveSecret(result.transcript.dhOutputs, result.transcript.kemSecret!!))
+        assertThat(result.sharedSecret).isNotEqualTo(X3dh.deriveSecret(result.transcript.dhOutputs))
     }
 
     @Test
     fun `knowing every dh output is not enough without the ml-kem secret`() {
         val result = user1.initiate(server.fetchBundle("User 2")).result
 
-        val guess = Pqxdh.deriveSecret(result.dhOutputs, ByteArray(MlKem.SHARED_SECRET_BYTES))
+        val guess = Pqxdh.deriveSecret(result.transcript.dhOutputs, ByteArray(MlKem.SHARED_SECRET_BYTES))
 
         assertThat(guess).isNotEqualTo(result.sharedSecret)
     }

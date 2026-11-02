@@ -28,8 +28,8 @@ class X3dhTest {
     fun `uses four dh outputs while one-time prekeys last`() {
         val initiation = user1.initiate(server.fetchBundle("User 2"))
 
-        assertThat(initiation.result.dhOutputs).hasSize(4)
-        assertThat(user2.respond(initiation.header).dhOutputs.map { it.toList() }).isEqualTo(initiation.result.dhOutputs.map { it.toList() })
+        assertThat(initiation.result.transcript.dhOutputs).hasSize(4)
+        assertThat(user2.respond(initiation.header).transcript.dhOutputs.map { it.toList() }).isEqualTo(initiation.result.transcript.dhOutputs.map { it.toList() })
     }
 
     @Test
@@ -40,7 +40,7 @@ class X3dhTest {
         val initiation = user1.initiate(bundle)
 
         assertThat(bundle.oneTimePreKeyId).isNull()
-        assertThat(initiation.result.dhOutputs).hasSize(3)
+        assertThat(initiation.result.transcript.dhOutputs).hasSize(3)
         assertThat(user2.respond(initiation.header).sharedSecret).isEqualTo(initiation.result.sharedSecret)
     }
 
@@ -89,7 +89,7 @@ class X3dhTest {
     @Test
     fun `the secret follows the spec formula`() {
         val initiation = user1.initiate(server.fetchBundle("User 2"))
-        val concatenated = ByteArray(32) { 0xFF.toByte() } + initiation.result.dhOutputs.reduce { acc, bytes -> acc + bytes }
+        val concatenated = ByteArray(32) { 0xFF.toByte() } + initiation.result.transcript.dhOutputs.reduce { acc, bytes -> acc + bytes }
 
         val expected = Hkdf.sha256(concatenated, ByteArray(32), "E2EChat X3DH".encodeToByteArray(), 32)
 
