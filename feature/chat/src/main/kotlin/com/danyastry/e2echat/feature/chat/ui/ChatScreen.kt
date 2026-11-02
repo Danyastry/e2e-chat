@@ -31,6 +31,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.danyastry.e2echat.core.ui.theme.ChatTheme
 import com.danyastry.e2echat.feature.chat.R
+import com.danyastry.e2echat.feature.chat.model.EnvelopeKind
+import com.danyastry.e2echat.feature.chat.model.Person
+import com.danyastry.e2echat.feature.chat.state.Bubble
+import com.danyastry.e2echat.feature.chat.state.ChatUiState
+import com.danyastry.e2echat.feature.chat.state.ServerEntry
 
 @Composable
 fun ChatRoute(

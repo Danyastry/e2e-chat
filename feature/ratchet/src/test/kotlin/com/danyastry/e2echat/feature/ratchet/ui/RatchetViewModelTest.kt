@@ -1,5 +1,6 @@
 package com.danyastry.e2echat.feature.ratchet.ui
 
+import com.danyastry.e2echat.feature.ratchet.model.Participant
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

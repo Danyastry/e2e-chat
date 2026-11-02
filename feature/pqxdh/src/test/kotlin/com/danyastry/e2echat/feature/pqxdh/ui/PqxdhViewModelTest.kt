@@ -1,7 +1,7 @@
 package com.danyastry.e2echat.feature.pqxdh.ui
 
-import com.danyastry.e2echat.feature.pqxdh.Handshake
-import com.danyastry.e2echat.feature.pqxdh.HarvestDemo
+import com.danyastry.e2echat.feature.pqxdh.logic.HarvestDemo
+import com.danyastry.e2echat.feature.pqxdh.model.Handshake
 import com.google.common.truth.Truth.assertThat
 import org.junit.Test
 

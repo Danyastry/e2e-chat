@@ -26,12 +26,14 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.danyastry.e2echat.core.ui.theme.ChatTheme
-import com.danyastry.e2echat.feature.security.AttackerView
-import com.danyastry.e2echat.feature.security.Delivery
-import com.danyastry.e2echat.feature.security.DeliveryResult
 import com.danyastry.e2echat.feature.security.R
-import com.danyastry.e2echat.feature.security.RecordedMessage
-import com.danyastry.e2echat.feature.security.TimelineEntry
+import com.danyastry.e2echat.feature.security.model.AttackerView
+import com.danyastry.e2echat.feature.security.model.Delivery
+import com.danyastry.e2echat.feature.security.model.DeliveryResult
+import com.danyastry.e2echat.feature.security.model.Demo
+import com.danyastry.e2echat.feature.security.model.RecordedMessage
+import com.danyastry.e2echat.feature.security.model.TimelineEntry
+import com.danyastry.e2echat.feature.security.state.SecurityUiState
 
 @Composable
 fun SecurityRoute(

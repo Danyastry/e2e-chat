@@ -1,11 +1,15 @@
 package com.danyastry.e2echat.feature.ratchet.ui
 
 import androidx.lifecycle.ViewModel
-import com.danyastry.e2echat.core.crypto.Fingerprint
-import com.danyastry.e2echat.core.protocol.DoubleRatchet
-import com.danyastry.e2echat.core.protocol.KeyServer
-import com.danyastry.e2echat.core.protocol.RatchetSnapshot
-import com.danyastry.e2echat.core.protocol.X3dhUser
+import com.danyastry.e2echat.core.crypto.fingerprint.Fingerprint
+import com.danyastry.e2echat.core.protocol.keys.KeyServer
+import com.danyastry.e2echat.core.protocol.ratchet.DoubleRatchet
+import com.danyastry.e2echat.core.protocol.ratchet.RatchetSnapshot
+import com.danyastry.e2echat.core.protocol.x3dh.X3dhUser
+import com.danyastry.e2echat.feature.ratchet.model.Participant
+import com.danyastry.e2echat.feature.ratchet.state.LogEntry
+import com.danyastry.e2echat.feature.ratchet.state.ParticipantState
+import com.danyastry.e2echat.feature.ratchet.state.RatchetUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

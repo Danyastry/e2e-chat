@@ -23,11 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.danyastry.e2echat.core.ui.theme.ChatTheme
-import com.danyastry.e2echat.feature.pqxdh.Handshake
-import com.danyastry.e2echat.feature.pqxdh.NewChat
-import com.danyastry.e2echat.feature.pqxdh.QuantumAttack
 import com.danyastry.e2echat.feature.pqxdh.R
-import com.danyastry.e2echat.feature.pqxdh.Recording
+import com.danyastry.e2echat.feature.pqxdh.model.Handshake
+import com.danyastry.e2echat.feature.pqxdh.model.NewChat
+import com.danyastry.e2echat.feature.pqxdh.model.QuantumAttack
+import com.danyastry.e2echat.feature.pqxdh.model.Recording
+import com.danyastry.e2echat.feature.pqxdh.state.PqxdhUiState
 
 @Composable
 fun PqxdhRoute(

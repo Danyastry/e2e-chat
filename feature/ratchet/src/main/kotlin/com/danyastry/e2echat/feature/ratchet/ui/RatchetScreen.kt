@@ -25,6 +25,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.danyastry.e2echat.core.ui.theme.ChatTheme
 import com.danyastry.e2echat.feature.ratchet.R
+import com.danyastry.e2echat.feature.ratchet.model.Participant
+import com.danyastry.e2echat.feature.ratchet.state.LogEntry
+import com.danyastry.e2echat.feature.ratchet.state.ParticipantState
+import com.danyastry.e2echat.feature.ratchet.state.RatchetUiState
 
 @Composable
 fun RatchetRoute(

@@ -1,8 +1,9 @@
 package com.danyastry.e2echat.feature.pqxdh.ui
 
 import androidx.lifecycle.ViewModel
-import com.danyastry.e2echat.feature.pqxdh.HarvestDemo
-import com.danyastry.e2echat.feature.pqxdh.PreKeyDemo
+import com.danyastry.e2echat.feature.pqxdh.logic.HarvestDemo
+import com.danyastry.e2echat.feature.pqxdh.logic.PreKeyDemo
+import com.danyastry.e2echat.feature.pqxdh.state.PqxdhUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
