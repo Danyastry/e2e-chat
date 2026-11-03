@@ -3,7 +3,7 @@
     <string name="pqxdh_harvest_title">Record now, decrypt later</string>
     <string name="pqxdh_record">Record a chat over X3DH and one over PQXDH</string>
     <string name="pqxdh_attack">Years later: break every X25519 key</string>
-    <string name="pqxdh_recording">%1$s · prekey bundle in bytes: %2$d · first message header in bytes: %3$d</string>
+    <string name="pqxdh_recording">%1$s - prekey bundle in bytes: %2$d - first message header in bytes: %3$d</string>
     <string name="pqxdh_dh_broken">Diffie-Hellman outputs recomputed: %1$d of %1$d</string>
     <string name="pqxdh_x3dh_broken">The session key is rebuilt from them alone</string>
     <string name="pqxdh_pqxdh_safe">The ML-KEM secret is still missing, so the session key cannot be rebuilt</string>
