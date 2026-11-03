@@ -27,7 +27,7 @@
     <string name="x3dh_initiate">Check and compute</string>
     <string name="x3dh_signature_invalid">The signature does not match. User 1 stops here and talks to nobody.</string>
     <string name="x3dh_dh">DH%1$d: %2$s</string>
-    <string name="x3dh_dh_hint">DH1 identity × signed prekey, DH2 ephemeral × identity, DH3 ephemeral × signed prekey, DH4 ephemeral × one-time prekey</string>
+    <string name="x3dh_dh_hint">DH1 identity x signed prekey, DH2 ephemeral x identity, DH3 ephemeral x signed prekey, DH4 ephemeral x one-time prekey</string>
     <string name="x3dh_secret">Secret: %1$s</string>
     <plurals name="x3dh_header">
         <item quantity="one">Sends a %1$d byte header with the first message</item>
